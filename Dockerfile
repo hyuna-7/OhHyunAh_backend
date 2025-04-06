@@ -3,15 +3,18 @@ FROM gradle:8.5-jdk17 AS builder
 
 WORKDIR /app
 
-# gradle wrapper 전체 폴더 포함 복사
+# gradle wrapper 복사
 COPY gradlew .
 COPY gradle/ gradle/
 COPY build.gradle settings.gradle ./
 
-# 의존성 다운 (캐시)
+# gradlew 실행 권한 추가
+RUN chmod +x ./gradlew
+
+# 의존성 캐시
 RUN ./gradlew dependencies
 
-# 전체 소스 복사 후 bootJar build
+# 전체 소스 복사 후 bootJar
 COPY . .
 RUN ./gradlew bootJar
 

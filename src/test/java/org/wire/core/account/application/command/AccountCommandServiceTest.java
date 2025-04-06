@@ -52,13 +52,12 @@ class AccountCommandServiceTest{
 	@Test
 	@DisplayName("계좌 삭제 실패 - 회원 ID 불일치")
 	void delete_invalidMemberId() {
-		AccountDeleteRequest request = new AccountDeleteRequest(MEMBER_ID, 1L);
+		AccountDeleteRequest request = new AccountDeleteRequest(1L);
 		Account account = Account.register(2L, "1234567890123", BankCode.SHINHAN, 10000L);
 
 		when(accountRepository.findById(1L)).thenReturn(Optional.of(account));
 
-		assertThatThrownBy(() -> accountCommandService.delete(request.memberId(), request))
-			.isInstanceOf(CustomException.class);
+		assertThatThrownBy(() -> accountCommandService.delete(MEMBER_ID, request)).isInstanceOf(CustomException.class);
 	}
 
 	@Test
